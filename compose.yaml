@@ -1,0 +1,50 @@
+# Use postgres/example user/password credentials
+# mvn clean package spring-boot:repackage
+# docker compose up -d
+# docker build -t image .
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    # set shared memory limit when using docker compose
+    shm_size: 128mb
+    # or set shared memory limit when deploy via swarm stack
+    volumes:
+     - ./resources2/:/docker-entrypoint-initdb.d
+
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: appdb
+      POSTGRES_USER: admin 
+      DB_USER: app_user
+      DB_PASSWORD: myappwd
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports: 
+      - 5432:5432
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
+
+  my-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 8080:8080
+    environment:
+      - DB_PASSWORD=myappwd
+      - DB_USER=app_user
+      - DB_HOST=db
+      - DB_NAME=appdb
+      - DB_PORT=5432
