@@ -38,6 +38,8 @@ public class CarritoServiceImpl implements CarritoService {
         carritoDTO.setId_producto(carrito.getProducto().getId());
         carritoDTO.setNombre_producto(carrito.getProducto().getNombre());
         carritoDTO.setPrecio_producto(carrito.getProducto().getPrecio());
+        carritoDTO.setImagen(carrito.getProducto().getImagen());
+        carritoDTO.setDescripcion(carrito.getProducto().getDescripcion());
         carritoDTO.setSubtotal(carrito.getProducto().getPrecio().multiply(BigDecimal.valueOf(carrito.getCantidad())));
 
         return carritoDTO;
