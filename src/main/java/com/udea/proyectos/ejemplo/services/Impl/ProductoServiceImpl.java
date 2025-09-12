@@ -2,8 +2,10 @@ package com.udea.proyectos.ejemplo.services.Impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.udea.proyectos.ejemplo.dto.ProductoDTO;
 import com.udea.proyectos.ejemplo.entities.Producto;
 import com.udea.proyectos.ejemplo.repositories.ProductoRepository;
@@ -42,6 +44,15 @@ public class ProductoServiceImpl implements ProductoService{
             productos.add(convertToDto(p));
         } 
         return productos;
+    }
+
+    @Override
+    public ProductoDTO obtenerPorId(long id) {
+
+        Producto producto = productoDAO.findById(id)
+        .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        return convertToDto(producto);
     }
     
 }

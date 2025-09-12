@@ -83,5 +83,28 @@ public class CarritoServiceImpl implements CarritoService {
             throw new NoSuchElementException("El usuario no existe.");
         }
     }
+
+    @Override
+    public CarritoDTO eliminarProducto(long id) {
+        Carrito producto = carritoRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        if (producto.getCantidad()>1){
+            producto.setCantidad(producto.getCantidad()-1);
+            carritoRepository.save(producto);
+            return convertToDto(producto);
+        } else{
+            carritoRepository.delete(producto);
+            return convertToDto(producto);
+        }
+    }
+ 
+    @Override
+    public boolean eliminar(long id) {
+        Carrito producto = carritoRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        carritoRepository.delete(producto);
+        return true;
+    }
     
 }
