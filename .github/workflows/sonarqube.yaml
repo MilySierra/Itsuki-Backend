@@ -18,7 +18,7 @@ jobs:
           java-version: 21
 
       - name: Build project
-        run: mvn clean package -DskipTests
+        run: mvn clean package
 
       - name: Analyze with SonarQube
         uses: SonarSource/sonarqube-scan-action@v2.0.1
