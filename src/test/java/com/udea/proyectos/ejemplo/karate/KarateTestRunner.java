@@ -9,4 +9,15 @@ public class KarateTestRunner {
     Karate testProducto() {
         return Karate.run("classpath:karate/producto/producto.feature");
     }
+
+    @Karate.Test
+    Karate testCarrito() {
+        return Karate.run("classpath:karate/carrito/carrito.feature");
+    }
+
+    @Karate.Test
+    Karate testUsuario() {
+        return Karate.run("classpath:karate/usuario/usuario.feature");
+    }
+    
 }

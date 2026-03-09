@@ -1,9 +1,11 @@
 package com.udea.proyectos.ejemplo.services.Impl;
 
-import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.udea.proyectos.ejemplo.dto.UsuarioDTO;
 import com.udea.proyectos.ejemplo.entities.Usuario;
 import com.udea.proyectos.ejemplo.repositories.UsuarioRepository;
@@ -59,10 +61,11 @@ public class UsuarioServiceImpl implements UsuarioService{
             if (passwordEncoder.matches(usuarioDTO.getContrasena(), usuario.getContrasena())){
                 return convertToDTO(usuario);
             } else {
-                throw new UnsupportedOperationException("La contraseña es incorrecta.");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "La contraseña es incorrecta"
+);
             }
         } else {
-            throw new NoSuchElementException("El usuario no existe.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "El usuario no existe");
         }
     }
 }
