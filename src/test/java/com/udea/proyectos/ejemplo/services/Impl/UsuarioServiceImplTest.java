@@ -25,7 +25,7 @@ public class UsuarioServiceImplTest {
     private UsuarioRepository usuarioDao;
 
     @Mock
-    private PasswordEncoder passwordEncoder; // necesario porque el service lo usa
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UsuarioServiceImpl usuarioService;
@@ -59,7 +59,7 @@ public class UsuarioServiceImplTest {
         // ASSERT
         assertEquals("Juan", resultado.getNombre());
         assertEquals("juan@mail.com", resultado.getEmail());
-        assertEquals("No puedes saber lol", resultado.getContrasena()); // así lo definiste tú
+        assertEquals("No puedes saber lol", resultado.getContrasena());
         verify(passwordEncoder).encode("123456");
     }
 
@@ -86,7 +86,7 @@ public class UsuarioServiceImplTest {
         // ASSERT
         assertEquals("Juan", resultado.getNombre());
         assertEquals("juan@mail.com", resultado.getEmail());
-        assertEquals("No puedes saber lol", resultado.getContrasena()); // así lo definiste tú
+        assertEquals("No puedes saber lol", resultado.getContrasena());
     }
 
     
