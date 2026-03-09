@@ -6,6 +6,7 @@ on:
 jobs:
   Analysis:
     runs-on: ubuntu-latest
+    environment: sonar
     steps:
       - uses: actions/checkout@v4
         with:
