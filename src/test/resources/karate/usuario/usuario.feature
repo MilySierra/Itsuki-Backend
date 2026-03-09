@@ -12,7 +12,7 @@ Feature: Pruebas de aceptación /usuario
 
     Scenario: Iniciar sesión - devuelve 200
         Given path '/usuario/login'
-        And request {"email": "mily@udea.edu.co", "contrasena": "luisa" }
+        And request {"email": "luisa@udea.edu.co", "contrasena": "luisa" }
         When method POST
         Then status 200
         And match response.email == '#string'
@@ -31,11 +31,11 @@ Feature: Pruebas de aceptación /usuario
 
     Scenario: Iniciar sesión con contraseña incorrecta - debe devolver 401
         Given path '/usuario/login'
-        And request {"email": "mily@udea.edu.co", "contrasena": "mily" }
+        And request {"email": "luisa@udea.edu.co", "contrasena": "wrongpassword" }
         When method POST
         Then status 401
 
-    Scenario: Iniciar sesión con un usuario no existente - debe devolver 401
+    Scenario: Iniciar sesión con un usuario no existente - debe devolver 404
         Given path '/usuario/login'
         And request {"email": "camila@udea.edu.co", "contrasena": "mily" }
         When method POST
