@@ -3,7 +3,6 @@ package com.udea.proyectos.ejemplo.services.Impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +29,8 @@ public class CarritoServiceImpl implements CarritoService {
     @Autowired
     private ProductoRepository productoRepository;
 
+    static final String RESPUESTA = "Producto no encontrado";
+
     public static CarritoDTO convertToDto(Carrito carrito){
         CarritoDTO carritoDTO = new CarritoDTO();
         carritoDTO.setId(carrito.getId());
@@ -51,7 +52,7 @@ public class CarritoServiceImpl implements CarritoService {
         .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         Producto producto = productoRepository.findById(id_producto)
-        .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        .orElseThrow(() -> new RuntimeException(RESPUESTA));
 
         Optional<Carrito> carroExistente = carritoRepository.findByUsuarioAndProducto(usuario, producto);
 
@@ -73,23 +74,20 @@ public class CarritoServiceImpl implements CarritoService {
 
     @Override
     public List<CarritoDTO> obtenerCarrito(long id_usuario) {
-        if (usuarioRepository.findById(id_usuario).isPresent()){
-            List<CarritoDTO> carrito = new ArrayList<>();
-            if (usuarioRepository.findById(id_usuario).isPresent()){
-              for (Carrito c: carritoRepository.findByUsuario(usuarioRepository.findById(id_usuario).get())){
-                carrito.add(convertToDto(c));
-                }  
-            }
-            return carrito;
-        } else {
-            throw new NoSuchElementException("El usuario no existe.");
+        Usuario usuario = usuarioRepository.findById(id_usuario)
+            .orElseThrow(() -> new RuntimeException("El usuario no existe"));
+
+        List<CarritoDTO> carrito = new ArrayList<>();
+        for (Carrito c: carritoRepository.findByUsuario(usuario)){
+            carrito.add(convertToDto(c));
         }
+        return carrito;
     }
 
     @Override
     public CarritoDTO eliminarProducto(long id) {
         Carrito producto = carritoRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        .orElseThrow(() -> new RuntimeException(RESPUESTA));
 
         if (producto.getCantidad()>1){
             producto.setCantidad(producto.getCantidad()-1);
@@ -104,7 +102,7 @@ public class CarritoServiceImpl implements CarritoService {
     @Override
     public boolean eliminar(long id) {
         Carrito producto = carritoRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+        .orElseThrow(() -> new RuntimeException(RESPUESTA));
         carritoRepository.delete(producto);
         return true;
     }
