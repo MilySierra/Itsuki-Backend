@@ -136,11 +136,7 @@ public class UsuarioServiceImplTest {
         dto.setEmail(EMAIL);
         dto.setContrasena("juan");
 
-        Usuario usuario = new Usuario();
-        usuario.setEmail(EMAIL);
-        usuario.setContrasena("juan");
-
-        when(usuarioDao.findByEmail(EMAIL)).thenReturn(Optional.of(usuario));
+        when(usuarioDao.findByEmail(EMAIL)).thenReturn(Optional.empty());
 
         // ACT + ASSERT
         assertThrows(ResponseStatusException.class,
