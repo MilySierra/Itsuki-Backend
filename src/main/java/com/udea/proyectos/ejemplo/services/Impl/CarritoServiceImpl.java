@@ -3,6 +3,7 @@ package com.udea.proyectos.ejemplo.services.Impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +76,7 @@ public class CarritoServiceImpl implements CarritoService {
     @Override
     public List<CarritoDTO> obtenerCarrito(long id_usuario) {
         Usuario usuario = usuarioRepository.findById(id_usuario)
-            .orElseThrow(() -> new RuntimeException("El usuario no existe"));
+            .orElseThrow(() -> new NoSuchElementException("El usuario no existe"));
 
         List<CarritoDTO> carrito = new ArrayList<>();
         for (Carrito c: carritoRepository.findByUsuario(usuario)){
