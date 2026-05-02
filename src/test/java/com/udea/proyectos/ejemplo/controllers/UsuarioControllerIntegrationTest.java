@@ -93,24 +93,6 @@ public class UsuarioControllerIntegrationTest {
         assertEquals("juan@test.com", response.getBody().getEmail());
     }
 
-    // @Test
-    // void login_contrasenaIncorrecta_retorna401() {
-    //     UsuarioDTO dto = new UsuarioDTO();
-    //     dto.setNombre("Juan");
-    //     dto.setEmail("juan@test.com");
-    //     dto.setContrasena("123456");
-    //     restTemplate.postForEntity(baseUrl + "/usuario", dto, UsuarioDTO.class);
-
-    //     UsuarioDTO loginDTO = new UsuarioDTO();
-    //     loginDTO.setEmail("juan@test.com");
-    //     loginDTO.setContrasena("wrongpassword");
-
-    //     ResponseEntity<String> response = restTemplate.postForEntity(
-    //         baseUrl + "/usuario/login", loginDTO, String.class);
-
-    //     assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
-    // }
-
     @Test
     void login_usuarioInexistente_retorna404() {
         UsuarioDTO loginDTO = new UsuarioDTO();
