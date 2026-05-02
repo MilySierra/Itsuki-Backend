@@ -1,21 +1,24 @@
 package com.udea.proyectos.ejemplo.services.Impl;
 
-import com.udea.proyectos.ejemplo.dto.ProductoDTO;
-import com.udea.proyectos.ejemplo.entities.Producto;
-import com.udea.proyectos.ejemplo.repositories.ProductoRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.MockitoAnnotations;
+
+import com.udea.proyectos.ejemplo.dto.ProductoDTO;
+import com.udea.proyectos.ejemplo.entities.Producto;
+import com.udea.proyectos.ejemplo.repositories.ProductoRepository;
 
 public class ProductoServiceImplTest {
 
@@ -29,6 +32,8 @@ public class ProductoServiceImplTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+
+    static final String TIPO = "calzado";
 
     @Test
     void testObtenerTodo_retornaListaDeProductos() {
@@ -57,13 +62,13 @@ public class ProductoServiceImplTest {
         Producto p = new Producto();
         p.setId(2L);
         p.setNombre("Zapatos");
-        p.setTipo("calzado");
+        p.setTipo(TIPO);
         p.setPrecio(new BigDecimal("59.99"));
 
-        when(productoDAO.findByTipo("calzado")).thenReturn(Arrays.asList(p));
+        when(productoDAO.findByTipo(TIPO)).thenReturn(Arrays.asList(p));
 
         // ACT
-        List<ProductoDTO> resultado = productoService.obtenerPorTipo("calzado");
+        List<ProductoDTO> resultado = productoService.obtenerPorTipo(TIPO);
 
         // ASSERT
         assertEquals(1, resultado.size());

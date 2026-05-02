@@ -44,7 +44,7 @@ public class CarritoServiceImplTest {
     private Usuario usuario;
     private Producto producto;
 
-    static final String PRODUCTO = "Laptop";
+    static final String NOMBRE = "Laptop";
 
     @BeforeEach
     void setUp() {
@@ -57,7 +57,7 @@ public class CarritoServiceImplTest {
 
         producto = new Producto();
         producto.setId(1L);
-        producto.setNombre(PRODUCTO);
+        producto.setNombre(NOMBRE);
         producto.setPrecio(new BigDecimal("1500.00"));
     }
 
@@ -82,7 +82,7 @@ public class CarritoServiceImplTest {
 
 
         assertEquals(1, resultado.getCantidad());
-        assertEquals(PRODUCTO, resultado.getNombre_producto());
+        assertEquals(NOMBRE, resultado.getNombre_producto());
         assertEquals(new BigDecimal("1500.00"), resultado.getSubtotal());
     }
 
@@ -145,7 +145,7 @@ public class CarritoServiceImplTest {
 
         assertEquals(1, resultado.size());
         assertEquals(2, resultado.get(0).getCantidad());
-        assertEquals(PRODUCTO, resultado.get(0).getNombre_producto());
+        assertEquals(NOMBRE, resultado.get(0).getNombre_producto());
     }
 
     @Test
