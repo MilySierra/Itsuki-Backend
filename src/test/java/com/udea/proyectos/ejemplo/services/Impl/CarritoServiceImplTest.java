@@ -1,5 +1,23 @@
 package com.udea.proyectos.ejemplo.services.Impl;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.MockitoAnnotations;
+
 import com.udea.proyectos.ejemplo.dto.CarritoDTO;
 import com.udea.proyectos.ejemplo.entities.Carrito;
 import com.udea.proyectos.ejemplo.entities.Producto;
@@ -7,22 +25,6 @@ import com.udea.proyectos.ejemplo.entities.Usuario;
 import com.udea.proyectos.ejemplo.repositories.CarritoRepository;
 import com.udea.proyectos.ejemplo.repositories.ProductoRepository;
 import com.udea.proyectos.ejemplo.repositories.UsuarioRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import java.math.BigDecimal;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-import java.util.Arrays;
-import java.util.List;
-//import java.util.NoSuchElementException;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 public class CarritoServiceImplTest {
 
@@ -42,6 +44,8 @@ public class CarritoServiceImplTest {
     private Usuario usuario;
     private Producto producto;
 
+    static final String PRODUCTO = "Laptop";
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -53,7 +57,7 @@ public class CarritoServiceImplTest {
 
         producto = new Producto();
         producto.setId(1L);
-        producto.setNombre("Laptop");
+        producto.setNombre(PRODUCTO);
         producto.setPrecio(new BigDecimal("1500.00"));
     }
 
@@ -78,7 +82,7 @@ public class CarritoServiceImplTest {
 
 
         assertEquals(1, resultado.getCantidad());
-        assertEquals("Laptop", resultado.getNombre_producto());
+        assertEquals(PRODUCTO, resultado.getNombre_producto());
         assertEquals(new BigDecimal("1500.00"), resultado.getSubtotal());
     }
 
@@ -114,8 +118,6 @@ public class CarritoServiceImplTest {
 
     @Test
     void testGuardarProducto_lanzaExcepcionSiProductoNoExiste() {
-
-        Usuario usuario = new Usuario();
         usuario.setId(1L);
 
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
@@ -143,7 +145,7 @@ public class CarritoServiceImplTest {
 
         assertEquals(1, resultado.size());
         assertEquals(2, resultado.get(0).getCantidad());
-        assertEquals("Laptop", resultado.get(0).getNombre_producto());
+        assertEquals(PRODUCTO, resultado.get(0).getNombre_producto());
     }
 
     @Test

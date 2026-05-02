@@ -1,11 +1,10 @@
 package com.udea.proyectos.ejemplo.controllers;
 
-import com.udea.proyectos.ejemplo.dto.CarritoDTO;
-import com.udea.proyectos.ejemplo.entities.Producto;
-import com.udea.proyectos.ejemplo.entities.Usuario;
-import com.udea.proyectos.ejemplo.repositories.CarritoRepository;
-import com.udea.proyectos.ejemplo.repositories.ProductoRepository;
-import com.udea.proyectos.ejemplo.repositories.UsuarioRepository;
+import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.math.BigDecimal;
-
-import static org.junit.jupiter.api.Assertions.*;
+import com.udea.proyectos.ejemplo.dto.CarritoDTO;
+import com.udea.proyectos.ejemplo.entities.Producto;
+import com.udea.proyectos.ejemplo.entities.Usuario;
+import com.udea.proyectos.ejemplo.repositories.CarritoRepository;
+import com.udea.proyectos.ejemplo.repositories.ProductoRepository;
+import com.udea.proyectos.ejemplo.repositories.UsuarioRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -47,6 +49,7 @@ public class CarritoControllerIntegrationTest {
     private String baseUrl;
     private Usuario usuarioGuardado;
     private Producto productoGuardado;
+    static final String RUTA = "/carrito/";
 
     @BeforeEach
     void setUp() {
@@ -73,7 +76,7 @@ public class CarritoControllerIntegrationTest {
     @Test
     void guardarProducto_retorna201() {
         ResponseEntity<CarritoDTO> response = restTemplate.postForEntity(
-            baseUrl + "/carrito/" + usuarioGuardado.getId() + "/" + productoGuardado.getId(),
+            baseUrl + RUTA + usuarioGuardado.getId() + "/" + productoGuardado.getId(),
             null, CarritoDTO.class);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -84,11 +87,11 @@ public class CarritoControllerIntegrationTest {
     @Test
     void guardarProducto_mismoProducto_incrementaCantidad() {
         restTemplate.postForEntity(
-            baseUrl + "/carrito/" + usuarioGuardado.getId() + "/" + productoGuardado.getId(),
+            baseUrl + RUTA + usuarioGuardado.getId() + "/" + productoGuardado.getId(),
             null, CarritoDTO.class);
 
         ResponseEntity<CarritoDTO> response = restTemplate.postForEntity(
-            baseUrl + "/carrito/" + usuarioGuardado.getId() + "/" + productoGuardado.getId(),
+            baseUrl + RUTA + usuarioGuardado.getId() + "/" + productoGuardado.getId(),
             null, CarritoDTO.class);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
@@ -98,11 +101,11 @@ public class CarritoControllerIntegrationTest {
     @Test
     void obtenerCarrito_retornaLista() {
         restTemplate.postForEntity(
-            baseUrl + "/carrito/" + usuarioGuardado.getId() + "/" + productoGuardado.getId(),
+            baseUrl + RUTA+ usuarioGuardado.getId() + "/" + productoGuardado.getId(),
             null, CarritoDTO.class);
 
         ResponseEntity<CarritoDTO[]> response = restTemplate.getForEntity(
-            baseUrl + "/carrito/" + usuarioGuardado.getId(), CarritoDTO[].class);
+            baseUrl + RUTA + usuarioGuardado.getId(), CarritoDTO[].class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertTrue(response.getBody().length > 0);
@@ -112,16 +115,16 @@ public class CarritoControllerIntegrationTest {
     void eliminarProducto_decrementa_cantidad() {
         // Agregar dos veces
         restTemplate.postForEntity(
-            baseUrl + "/carrito/" + usuarioGuardado.getId() + "/" + productoGuardado.getId(),
+            baseUrl + RUTA + usuarioGuardado.getId() + "/" + productoGuardado.getId(),
             null, CarritoDTO.class);
         ResponseEntity<CarritoDTO> agregado = restTemplate.postForEntity(
-            baseUrl + "/carrito/" + usuarioGuardado.getId() + "/" + productoGuardado.getId(),
+            baseUrl + RUTA + usuarioGuardado.getId() + "/" + productoGuardado.getId(),
             null, CarritoDTO.class);
 
         long carritoId = agregado.getBody().getId();
 
         ResponseEntity<CarritoDTO> response = restTemplate.exchange(
-            baseUrl + "/carrito/" + carritoId,
+            baseUrl + RUTA + carritoId,
             HttpMethod.PUT, null, CarritoDTO.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -131,13 +134,13 @@ public class CarritoControllerIntegrationTest {
     @Test
     void eliminarCarrito_retornaTrue() {
         ResponseEntity<CarritoDTO> agregado = restTemplate.postForEntity(
-            baseUrl + "/carrito/" + usuarioGuardado.getId() + "/" + productoGuardado.getId(),
+            baseUrl + RUTA + usuarioGuardado.getId() + "/" + productoGuardado.getId(),
             null, CarritoDTO.class);
 
         long carritoId = agregado.getBody().getId();
 
         ResponseEntity<Boolean> response = restTemplate.exchange(
-            baseUrl + "/carrito/" + carritoId,
+            baseUrl + RUTA + carritoId,
             HttpMethod.DELETE, null, Boolean.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());

@@ -1,8 +1,7 @@
 package com.udea.proyectos.ejemplo.controllers;
 
-import com.udea.proyectos.ejemplo.dto.UsuarioDTO;
-import com.udea.proyectos.ejemplo.repositories.CarritoRepository;
-import com.udea.proyectos.ejemplo.repositories.UsuarioRepository;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.udea.proyectos.ejemplo.dto.UsuarioDTO;
+import com.udea.proyectos.ejemplo.repositories.CarritoRepository;
+import com.udea.proyectos.ejemplo.repositories.UsuarioRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
@@ -32,6 +33,9 @@ public class UsuarioControllerIntegrationTest {
     private UsuarioRepository usuarioRepository;
 
     private String baseUrl;
+    static final String EMAIL = "juan@test.com";
+    static final String CONTRASENA = "123456";
+    static final String RUTA = "/usuario";
 
     @BeforeEach
     void setUp() {
@@ -44,16 +48,16 @@ public class UsuarioControllerIntegrationTest {
     void crearUsuario_exitoso_retorna201() {
         UsuarioDTO dto = new UsuarioDTO();
         dto.setNombre("Juan");
-        dto.setEmail("juan@test.com");
-        dto.setContrasena("123456");
+        dto.setEmail(EMAIL);
+        dto.setContrasena(CONTRASENA);
 
         ResponseEntity<UsuarioDTO> response = restTemplate.postForEntity(
-            baseUrl + "/usuario", dto, UsuarioDTO.class);
+            baseUrl + RUTA, dto, UsuarioDTO.class);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals("Juan", response.getBody().getNombre());
-        assertEquals("juan@test.com", response.getBody().getEmail());
+        assertEquals(EMAIL, response.getBody().getEmail());
         assertEquals("No puedes saber lol", response.getBody().getContrasena());
     }
 
@@ -61,13 +65,13 @@ public class UsuarioControllerIntegrationTest {
     void crearUsuario_emailDuplicado_retornaError() {
         UsuarioDTO dto = new UsuarioDTO();
         dto.setNombre("Juan");
-        dto.setEmail("juan@test.com");
-        dto.setContrasena("123456");
+        dto.setEmail(EMAIL);
+        dto.setContrasena(CONTRASENA);
 
-        restTemplate.postForEntity(baseUrl + "/usuario", dto, UsuarioDTO.class);
+        restTemplate.postForEntity(baseUrl + RUTA, dto, UsuarioDTO.class);
 
         ResponseEntity<String> response = restTemplate.postForEntity(
-            baseUrl + "/usuario", dto, String.class);
+            baseUrl + RUTA, dto, String.class);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
     }
@@ -77,27 +81,27 @@ public class UsuarioControllerIntegrationTest {
         // Primero crear usuario
         UsuarioDTO dto = new UsuarioDTO();
         dto.setNombre("Juan");
-        dto.setEmail("juan@test.com");
-        dto.setContrasena("123456");
-        restTemplate.postForEntity(baseUrl + "/usuario", dto, UsuarioDTO.class);
+        dto.setEmail(EMAIL);
+        dto.setContrasena(CONTRASENA);
+        restTemplate.postForEntity(baseUrl + RUTA, dto, UsuarioDTO.class);
 
         // Luego login
         UsuarioDTO loginDTO = new UsuarioDTO();
-        loginDTO.setEmail("juan@test.com");
-        loginDTO.setContrasena("123456");
+        loginDTO.setEmail(EMAIL);
+        loginDTO.setContrasena(CONTRASENA);
 
         ResponseEntity<UsuarioDTO> response = restTemplate.postForEntity(
             baseUrl + "/usuario/login", loginDTO, UsuarioDTO.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("juan@test.com", response.getBody().getEmail());
+        assertEquals(EMAIL, response.getBody().getEmail());
     }
 
     @Test
     void login_usuarioInexistente_retorna404() {
         UsuarioDTO loginDTO = new UsuarioDTO();
         loginDTO.setEmail("noexiste@test.com");
-        loginDTO.setContrasena("123456");
+        loginDTO.setContrasena(CONTRASENA);
 
         ResponseEntity<String> response = restTemplate.postForEntity(
             baseUrl + "/usuario/login", loginDTO, String.class);

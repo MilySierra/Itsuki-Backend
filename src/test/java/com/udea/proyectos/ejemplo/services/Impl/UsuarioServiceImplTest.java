@@ -35,22 +35,25 @@ public class UsuarioServiceImplTest {
         MockitoAnnotations.openMocks(this);
     }
 
+    static final String EMAIL = "juan@mail.com";
+    static final String CONTRASENA = "123456";
+
     @Test
     void testCrearUsuario_exitoso() {
 
         UsuarioDTO dto = new UsuarioDTO();
         dto.setNombre("Juan");
-        dto.setEmail("juan@mail.com");
-        dto.setContrasena("123456");
+        dto.setEmail(EMAIL);
+        dto.setContrasena(CONTRASENA);
 
         Usuario usuarioGuardado = new Usuario();
         usuarioGuardado.setId(1L);
         usuarioGuardado.setNombre("Juan");
-        usuarioGuardado.setEmail("juan@mail.com");
+        usuarioGuardado.setEmail(EMAIL);
         usuarioGuardado.setContrasena("hash123");
 
-        when(usuarioDao.findByEmail("juan@mail.com")).thenReturn(Optional.empty());
-        when(passwordEncoder.encode("123456")).thenReturn("hash123");
+        when(usuarioDao.findByEmail(EMAIL)).thenReturn(Optional.empty());
+        when(passwordEncoder.encode(CONTRASENA)).thenReturn("hash123");
         when(usuarioDao.save(any(Usuario.class))).thenReturn(usuarioGuardado);
 
 
@@ -58,34 +61,34 @@ public class UsuarioServiceImplTest {
 
 
         assertEquals("Juan", resultado.getNombre());
-        assertEquals("juan@mail.com", resultado.getEmail());
+        assertEquals(EMAIL, resultado.getEmail());
         assertEquals("No puedes saber lol", resultado.getContrasena());
-        verify(passwordEncoder).encode("123456");
+        verify(passwordEncoder).encode(CONTRASENA);
     }
 
     @Test
     void testLogeo_exitoso() {
 
         UsuarioDTO dto = new UsuarioDTO();
-        dto.setEmail("juan@mail.com");
-        dto.setContrasena("123456");
+        dto.setEmail(EMAIL);
+        dto.setContrasena(CONTRASENA);
 
         Usuario usuarioGuardado = new Usuario();
         usuarioGuardado.setId(1L);
         usuarioGuardado.setNombre("Juan");
-        usuarioGuardado.setEmail("juan@mail.com");
-        usuarioGuardado.setContrasena("123456");
+        usuarioGuardado.setEmail(EMAIL);
+        usuarioGuardado.setContrasena(CONTRASENA);
 
-        when(usuarioDao.findByEmail("juan@mail.com")).thenReturn(Optional.of(usuarioGuardado));
-        when(passwordEncoder.matches("123456", "123456")).thenReturn(true);
-        when(usuarioDao.findUsuarioByEmail("juan@mail.com")).thenReturn(usuarioGuardado);
+        when(usuarioDao.findByEmail(EMAIL)).thenReturn(Optional.of(usuarioGuardado));
+        when(passwordEncoder.matches(CONTRASENA, CONTRASENA)).thenReturn(true);
+        when(usuarioDao.findUsuarioByEmail(EMAIL)).thenReturn(usuarioGuardado);
 
         // ACT
         UsuarioDTO resultado = usuarioService.login(dto);
 
         // ASSERT
         assertEquals("Juan", resultado.getNombre());
-        assertEquals("juan@mail.com", resultado.getEmail());
+        assertEquals(EMAIL, resultado.getEmail());
         assertEquals("No puedes saber lol", resultado.getContrasena());
     }
 
@@ -96,7 +99,7 @@ public class UsuarioServiceImplTest {
         // ARRANGE
         UsuarioDTO dto = new UsuarioDTO();
         dto.setEmail("existe@mail.com");
-        dto.setContrasena("123456");
+        dto.setContrasena(CONTRASENA);
 
         when(usuarioDao.findByEmail("existe@mail.com"))
             .thenReturn(Optional.of(new Usuario()));
@@ -110,15 +113,15 @@ public class UsuarioServiceImplTest {
     void testLogin_contrasenaIncorrecta_lanzaExcepcion() {
         // ARRANGE
         UsuarioDTO dto = new UsuarioDTO();
-        dto.setEmail("juan@mail.com");
+        dto.setEmail(EMAIL);
         dto.setContrasena("wrongpass");
 
         Usuario usuario = new Usuario();
-        usuario.setEmail("juan@mail.com");
+        usuario.setEmail(EMAIL);
         usuario.setContrasena("hashCorrecto");
 
-        when(usuarioDao.findByEmail("juan@mail.com")).thenReturn(Optional.of(usuario));
-        when(usuarioDao.findUsuarioByEmail("juan@mail.com")).thenReturn(usuario);
+        when(usuarioDao.findByEmail(EMAIL)).thenReturn(Optional.of(usuario));
+        when(usuarioDao.findUsuarioByEmail(EMAIL)).thenReturn(usuario);
         when(passwordEncoder.matches("wrongpass", "hashCorrecto")).thenReturn(false);
 
         // ACT + ASSERT
@@ -130,14 +133,14 @@ public class UsuarioServiceImplTest {
     void testLogin_usuarioInexistente_lanzaExcepcion() {
         // ARRANGE
         UsuarioDTO dto = new UsuarioDTO();
-        dto.setEmail("juan@mail.com");
+        dto.setEmail(EMAIL);
         dto.setContrasena("juan");
 
         Usuario usuario = new Usuario();
-        usuario.setEmail("juanm@mail.com");
+        usuario.setEmail(EMAIL);
         usuario.setContrasena("juan");
 
-        when(usuarioDao.findByEmail("juanm@mail.com")).thenReturn(Optional.of(usuario));
+        when(usuarioDao.findByEmail(EMAIL)).thenReturn(Optional.of(usuario));
 
         // ACT + ASSERT
         assertThrows(ResponseStatusException.class,
@@ -148,7 +151,7 @@ public class UsuarioServiceImplTest {
     void testCrearUsuario_lanzaExcepcionSiContraseñaNula() {
         // ARRANGE
         UsuarioDTO dto = new UsuarioDTO();
-        dto.setEmail("Julian@mail.com");
+        dto.setEmail(EMAIL);
         dto.setContrasena(null);
 
         // ACT + ASSERT

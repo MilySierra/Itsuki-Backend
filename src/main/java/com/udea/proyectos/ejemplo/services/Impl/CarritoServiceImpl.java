@@ -75,8 +75,10 @@ public class CarritoServiceImpl implements CarritoService {
     public List<CarritoDTO> obtenerCarrito(long id_usuario) {
         if (usuarioRepository.findById(id_usuario).isPresent()){
             List<CarritoDTO> carrito = new ArrayList<>();
-            for (Carrito c: carritoRepository.findByUsuario(usuarioRepository.findById(id_usuario).get())){
+            if (usuarioRepository.findById(id_usuario).isPresent()){
+              for (Carrito c: carritoRepository.findByUsuario(usuarioRepository.findById(id_usuario).get())){
                 carrito.add(convertToDto(c));
+                }  
             }
             return carrito;
         } else {
