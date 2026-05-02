@@ -5,7 +5,7 @@ Feature: Pruebas de aceptación /usuario
 
     Scenario: Crear usuario - devuelve 201
         Given path '/usuario'
-        And request {"nombre": "luisa", "email": "luisa@udea.edu.co", "contrasena": "luisa" }
+        And request {"nombre": "mateo", "email": "jahsj@udea.edu.co", "contrasena": "123456" }
         When method POST
         Then status 201
         And match response.nombre == '#string'

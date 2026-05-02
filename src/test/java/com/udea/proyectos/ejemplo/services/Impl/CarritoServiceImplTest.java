@@ -38,7 +38,7 @@ public class CarritoServiceImplTest {
     @InjectMocks
     private CarritoServiceImpl carritoService;
 
-    // Datos reutilizables en todos los tests
+
     private Usuario usuario;
     private Producto producto;
 
@@ -59,24 +59,24 @@ public class CarritoServiceImplTest {
 
     @Test
     void testGuardarProducto_nuevoEnCarrito() {
-        // ARRANGE — producto que aún no está en el carrito
+
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
         when(productoRepository.findById(1L)).thenReturn(Optional.of(producto));
         when(carritoRepository.findByUsuarioAndProducto(usuario, producto))
             .thenReturn(Optional.empty());
 
         Carrito carritoGuardado = new Carrito();
-        carritoGuardado.setId(1L);
+        carritoGuardado.setId(1L);  
         carritoGuardado.setUsuario(usuario);
         carritoGuardado.setProducto(producto);
         carritoGuardado.setCantidad(1);
 
         when(carritoRepository.save(any(Carrito.class))).thenReturn(carritoGuardado);
 
-        // ACT
+        
         CarritoDTO resultado = carritoService.guardarProducto(1L, 1L);
 
-        // ASSERT
+
         assertEquals(1, resultado.getCantidad());
         assertEquals("Laptop", resultado.getNombre_producto());
         assertEquals(new BigDecimal("1500.00"), resultado.getSubtotal());
@@ -84,7 +84,7 @@ public class CarritoServiceImplTest {
 
     @Test
     void testGuardarProducto_incrementaCantidadSiYaExiste() {
-        // ARRANGE — producto que YA está en el carrito con cantidad 2
+
         Carrito carritoExistente = new Carrito();
         carritoExistente.setId(1L);
         carritoExistente.setUsuario(usuario);
@@ -97,10 +97,10 @@ public class CarritoServiceImplTest {
             .thenReturn(Optional.of(carritoExistente));
         when(carritoRepository.save(any(Carrito.class))).thenReturn(carritoExistente);
 
-        // ACT
+
         CarritoDTO resultado = carritoService.guardarProducto(1L, 1L);
 
-        // ASSERT — debe ser 3 (2 + 1)
+
         assertEquals(3, resultado.getCantidad());
     }
 
@@ -113,8 +113,21 @@ public class CarritoServiceImplTest {
     }
 
     @Test
+    void testGuardarProducto_lanzaExcepcionSiProductoNoExiste() {
+
+        Usuario usuario = new Usuario();
+        usuario.setId(1L);
+
+        when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
+        when(productoRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(RuntimeException.class,
+            () -> carritoService.guardarProducto(1L, 99L));
+    }
+
+    @Test
     void testObtenerCarrito_retornaListaDTO() {
-        // ARRANGE
+
         Carrito c = new Carrito();
         c.setId(1L);
         c.setUsuario(usuario);
@@ -124,10 +137,10 @@ public class CarritoServiceImplTest {
         when(usuarioRepository.findById(1L)).thenReturn(Optional.of(usuario));
         when(carritoRepository.findByUsuario(usuario)).thenReturn(Arrays.asList(c));
 
-        // ACT
+
         List<CarritoDTO> resultado = carritoService.obtenerCarrito(1L);
 
-        // ASSERT
+
         assertEquals(1, resultado.size());
         assertEquals(2, resultado.get(0).getCantidad());
         assertEquals("Laptop", resultado.get(0).getNombre_producto());
@@ -143,7 +156,7 @@ public class CarritoServiceImplTest {
 
     @Test
     void testEliminarProducto_decrementaCantidadSiEsMayorA1() {
-        // ARRANGE — cantidad 3, debe quedar en 2
+
         Carrito carrito = new Carrito();
         carrito.setId(1L);
         carrito.setUsuario(usuario);
@@ -153,17 +166,17 @@ public class CarritoServiceImplTest {
         when(carritoRepository.findById(1L)).thenReturn(Optional.of(carrito));
         when(carritoRepository.save(any(Carrito.class))).thenReturn(carrito);
 
-        // ACT
+
         CarritoDTO resultado = carritoService.eliminarProducto(1L);
 
-        // ASSERT
+
         assertEquals(2, resultado.getCantidad());
         verify(carritoRepository).save(carrito);
     }
 
     @Test
     void testEliminarProducto_eliminaRegistroSiCantidadEs1() {
-        // ARRANGE — cantidad 1, debe borrarse del carrito
+       
         Carrito carrito = new Carrito();
         carrito.setId(1L);
         carrito.setUsuario(usuario);
@@ -172,20 +185,18 @@ public class CarritoServiceImplTest {
 
         when(carritoRepository.findById(1L)).thenReturn(Optional.of(carrito));
 
-        // ACT
-        CarritoDTO resultado = carritoService.eliminarProducto(1L);
 
-        // ASSERT
+        CarritoDTO resultado = carritoService.eliminarProducto(1L);
+        
         assertEquals(1, resultado.getCantidad());
-        verify(carritoRepository).delete(carrito); // se borró, no se guardó
+        verify(carritoRepository).delete(carrito); 
     }
 
     @Test
     void testEliminarProducto_lanzaExcepcionSiNoExiste() {
-        // ARRANGE — el repositorio no encuentra nada con ese ID
+        
         when(carritoRepository.findById(99L)).thenReturn(Optional.empty());
-
-        // ACT + ASSERT — verificamos que lanza la excepción
+        
         assertThrows(RuntimeException.class,
             () -> carritoService.eliminarProducto(99L));
     }

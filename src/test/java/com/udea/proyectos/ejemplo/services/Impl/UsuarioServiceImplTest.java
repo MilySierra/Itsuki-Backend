@@ -25,7 +25,7 @@ public class UsuarioServiceImplTest {
     private UsuarioRepository usuarioDao;
 
     @Mock
-    private PasswordEncoder passwordEncoder; // necesario porque el service lo usa
+    private PasswordEncoder passwordEncoder; 
 
     @InjectMocks
     private UsuarioServiceImpl usuarioService;
@@ -37,7 +37,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     void testCrearUsuario_exitoso() {
-        // ARRANGE
+
         UsuarioDTO dto = new UsuarioDTO();
         dto.setNombre("Juan");
         dto.setEmail("juan@mail.com");
@@ -53,10 +53,10 @@ public class UsuarioServiceImplTest {
         when(passwordEncoder.encode("123456")).thenReturn("hash123");
         when(usuarioDao.save(any(Usuario.class))).thenReturn(usuarioGuardado);
 
-        // ACT
+
         UsuarioDTO resultado = usuarioService.crearUsuario(dto);
 
-        // ASSERT
+
         assertEquals("Juan", resultado.getNombre());
         assertEquals("juan@mail.com", resultado.getEmail());
         assertEquals("No puedes saber lol", resultado.getContrasena()); // así lo definiste tú
@@ -65,7 +65,7 @@ public class UsuarioServiceImplTest {
 
     @Test
     void testLogeo_exitoso() {
-        // ARRANGE
+
         UsuarioDTO dto = new UsuarioDTO();
         dto.setEmail("juan@mail.com");
         dto.setContrasena("123456");
