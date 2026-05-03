@@ -1,7 +1,11 @@
 package com.udea.proyectos.ejemplo.dto;
 
 import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.Setter; 
 
+@Getter
+@Setter
 public class CarritoDTO {
     private long id;
     private int cantidad;
@@ -29,80 +33,5 @@ public class CarritoDTO {
         this.descripcion = descripcion;
         this.subtotal = subtotal;
     }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public long getId_usuario() {
-        return id_usuario;
-    }
-
-    public void setId_usuario(long id_usuario) {
-        this.id_usuario = id_usuario;
-    }
-
-    public long getId_producto() {
-        return id_producto;
-    }
-
-    public void setId_producto(long id_producto) {
-        this.id_producto = id_producto;
-    }
-
-    public String getNombre_producto() {
-        return nombre_producto;
-    }
-
-    public void setNombre_producto(String nombre_producto) {
-        this.nombre_producto = nombre_producto;
-    }
-
-    public BigDecimal getPrecio_producto() {
-        return precio_producto;
-    }
-
-    public void setPrecio_producto(BigDecimal precio_producto) {
-        this.precio_producto = precio_producto;
-    }
-
-    public BigDecimal getSubtotal() {
-        return subtotal;
-    }
-
-    public void setSubtotal(BigDecimal subtotal) {
-        this.subtotal = subtotal;
-    }
-  
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
-
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
 
 }
