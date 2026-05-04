@@ -9,6 +9,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+
+
 @Entity
 @Table(name="carrito")
 public class Carrito {
@@ -69,16 +71,4 @@ public class Carrito {
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-  
-=======
-
-=======
-
-    
->>>>>>> parent of 9b475ad (reduce cyclomatic complexity)
-    
-    
->>>>>>> parent of 9b475ad (reduce cyclomatic complexity)
 }
