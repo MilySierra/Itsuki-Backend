@@ -1,11 +1,18 @@
 package com.udea.proyectos.ejemplo.dto;
 
 import java.math.BigDecimal;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter; 
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CarritoDTO {
     private long id;
     private int cantidad;
@@ -16,22 +23,4 @@ public class CarritoDTO {
     private String imagen;
     private String descripcion;
     private BigDecimal subtotal;
-
-    public CarritoDTO() {
-    }
-
-
-    public CarritoDTO(long id, int cantidad, long id_usuario, long id_producto, String nombre_producto,
-            BigDecimal precio_producto, String imagen, String descripcion, BigDecimal subtotal) {
-        this.id = id;
-        this.cantidad = cantidad;
-        this.id_usuario = id_usuario;
-        this.id_producto = id_producto;
-        this.nombre_producto = nombre_producto;
-        this.precio_producto = precio_producto;
-        this.imagen = imagen;
-        this.descripcion = descripcion;
-        this.subtotal = subtotal;
-    }
-
 }
