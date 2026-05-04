@@ -69,5 +69,11 @@ public class Carrito {
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
+<<<<<<< HEAD
   
+=======
+
+    
+    
+>>>>>>> parent of 9b475ad (reduce cyclomatic complexity)
 }
