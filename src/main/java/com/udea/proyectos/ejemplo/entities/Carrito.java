@@ -69,7 +69,5 @@ public class Carrito {
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
-
-    
-    
+  
 }
