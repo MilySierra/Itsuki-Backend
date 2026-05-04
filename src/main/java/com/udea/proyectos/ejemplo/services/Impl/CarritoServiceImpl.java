@@ -48,11 +48,11 @@ public class CarritoServiceImpl implements CarritoService {
     }
 
     @Override
-    public CarritoDTO guardarProducto(long idUsuario, long idProducto) {
-        Usuario usuario = usuarioRepository.findById(idUsuario)
+    public CarritoDTO guardarProducto(long id_usuario, long id_producto) {
+        Usuario usuario = usuarioRepository.findById(id_usuario)
         .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        Producto producto = productoRepository.findById(idProducto)
+        Producto producto = productoRepository.findById(id_producto)
         .orElseThrow(() -> new RuntimeException(RESPUESTA));
 
         Optional<Carrito> carroExistente = carritoRepository.findByUsuarioAndProducto(usuario, producto);
@@ -74,8 +74,8 @@ public class CarritoServiceImpl implements CarritoService {
     }
 
     @Override
-    public List<CarritoDTO> obtenerCarrito(long idUsuario) {
-        Usuario usuario = usuarioRepository.findById(idUsuario)
+    public List<CarritoDTO> obtenerCarrito(long id_usuario) {
+        Usuario usuario = usuarioRepository.findById(id_usuario)
             .orElseThrow(() -> new NoSuchElementException("El usuario no existe"));
 
         List<CarritoDTO> carrito = new ArrayList<>();
