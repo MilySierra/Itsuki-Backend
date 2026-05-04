@@ -9,8 +9,21 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter; 
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name="carrito")
+
 public class Carrito {
     
     @Id
@@ -27,49 +40,5 @@ public class Carrito {
     @ManyToOne
     @JoinColumn(name="id_producto", nullable=false)
     private Producto producto;
-
-    public Carrito() {
-    }
-
-    public Carrito(long id, int cantidad, Usuario usuario, Producto producto) {
-        this.id = id;
-        this.cantidad = cantidad;
-        this.usuario = usuario;
-        this.producto = producto;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
-    
     
 }

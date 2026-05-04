@@ -8,6 +8,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter; 
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -28,53 +40,9 @@ public class Usuario {
     @Column(name = "contrasena", nullable = false, length = 255)
     private String contrasena;
 
-    public Usuario() {
-    }
-
     public Usuario(@Size(max = 30) String email, @Size(max = 255) String contrasena) {
         this.email = email;
         this.contrasena = contrasena;
     }
 
-
-    public Usuario(long id, @Size(max = 100) String nombre, @Size(max = 30) String email,
-            @Size(max = 255) String contrasena) {
-        this.id = id;
-        this.nombre = nombre;
-        this.email = email;
-        this.contrasena = contrasena;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
-    }
-    
 }
