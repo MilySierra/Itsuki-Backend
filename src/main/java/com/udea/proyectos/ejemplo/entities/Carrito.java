@@ -23,7 +23,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name="carrito")
-
 public class Carrito {
     
     @Id
