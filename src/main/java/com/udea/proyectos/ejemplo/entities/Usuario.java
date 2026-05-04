@@ -36,7 +36,6 @@ public class Usuario {
         this.contrasena = contrasena;
     }
 
-
     public Usuario(long id, @Size(max = 100) String nombre, @Size(max = 30) String email,
             @Size(max = 255) String contrasena) {
         this.id = id;
