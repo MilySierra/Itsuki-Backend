@@ -70,9 +70,14 @@ public class Carrito {
         this.producto = producto;
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
   
 =======
 
+=======
+
+    
+>>>>>>> parent of 9b475ad (reduce cyclomatic complexity)
     
     
 >>>>>>> parent of 9b475ad (reduce cyclomatic complexity)
