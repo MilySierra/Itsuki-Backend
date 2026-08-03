@@ -1,4 +1,4 @@
-# 🍽️ Restaurant App - Itsuki
+# Restaurant App - Itsuki
 
 Backend de una aplicación móvil para la gestión de pedidos en un restaurante, desarrollado con **Spring Boot** y **Java**. Proporciona la API REST utilizada por la aplicación para consultar el menú, administrar el carrito de compras y procesar los pedidos.
 
